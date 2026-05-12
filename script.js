@@ -17,8 +17,7 @@ function main()
 {  
 
     console.log(c_quote_items);
-    
-    total_price = 0;
+        
     renderQuote(c_quote_items);
 
 }
@@ -93,6 +92,10 @@ function renderQuote(in_quote_items)
       `;
       quoteItemList.appendChild(elTR);
     }
+
+    document.querySelector("#customer-price").innerHTML = total_price;
+
+
 }
 
 
@@ -101,6 +104,7 @@ function addToQuoteList(in_QID)
 
     console.log(in_QID);
     addQuoteItem(c_quote_items, in_QID);
+    calculateQuotePrice();
     renderQuote(c_quote_items);
 
 }
@@ -111,7 +115,21 @@ function deleteFromQuoteList(in_UUID)
 console.log(in_UUID);
 
     deleteQuoteItem(c_quote_items, in_UUID);
+    calculateQuotePrice();
     renderQuote(c_quote_items);
+
+
+}
+
+function calculateQuotePrice()
+{
+
+    total_price = 0;
+    for (let item of c_quote_items) 
+    {
+        total_price = total_price + item.quote_item_unit_price;
+    
+    }
 
 
 }
