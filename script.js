@@ -4,11 +4,14 @@ let our_quote_items = []; // our price list
 let c_quote_items = []; // customer quote items
 let total_price = 0;
 
+
 document.addEventListener("DOMContentLoaded", async function() {
 
     await loadData();
     main();
 
+    //let testQID = await loadCustomerQuote();
+    //console.log(testQID);
 
 });
 
@@ -29,29 +32,11 @@ async function loadData()
     // get price list
     const response = await axios.get("/data.json");
     our_quote_items = response.data.quote_items;
+
 console.log(our_quote_items);
 
     // render price list
-    /*
-    let oneItemHTML = "";
-
-    for (let qi of our_quote_items) 
-    {
-        oneItemHTML += `<li>
-        
-        <button id="btn-${qi.quote_item_id}" class="btn btn-primary mb-3" data-qid="${qi.quote_item_id}" onClick="addToQuoteList(this.dataset.qid);">Add Item</button> | 
-        ${qi.quote_item_category} | 
-        ${qi.quote_item_id} | 
-        ${qi.quote_item_name} | 
-        ${qi.quote_item_unit_price}
-        </li>`;
-        
-    }
-        document.querySelector("#price-list").innerHTML = "<ul>" + oneItemHTML + "</ul>";
-
-*/
-
-renderPriceList(our_quote_items);
+    renderPriceList(our_quote_items);
 
     
 }
@@ -128,8 +113,30 @@ function calculateQuotePrice()
     for (let item of c_quote_items) 
     {
         total_price = total_price + item.quote_item_unit_price;
-    
     }
 
-
 }
+
+
+const saveButton = document.querySelector("#btn-save-quote");
+saveButton.addEventListener("click", async function() {
+
+
+    let cqid = document.querySelector("#c-qid").value;
+    let cname = document.querySelector("#c-name").value;
+    let cmobile = document.querySelector("#c-mobile").value;
+
+    if ((cqid.trim().length > 0) && (cname.trim().length > 0) && (cmobile.trim().length > 0))
+    {
+        saveCustomerQuote(cqid, cname, cmobile, total_price);
+    }
+    else
+    {
+        alert("Please enter all fields [Quote ID / Name / Mobile].");
+    }
+    
+
+    
+      
+
+})

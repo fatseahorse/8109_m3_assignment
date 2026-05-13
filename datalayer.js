@@ -1,5 +1,8 @@
 
 // data layer
+const BASE_JSONBIN_URL = "https://api.jsonbin.io/v3/b";
+const JSONBIN_BIN_ID = "6a043855adc21f119a92b1ae";
+const JSONBIN_MASTER_KEY = "$2a$10$Ux9j81gTghRP/ZdK010f8./ju1p13Rj7WAnb3llY1vhvSjsRuhVkK";
 
 
 function getQuoteItem(in_quote_items, id)
@@ -58,4 +61,38 @@ function deleteQuoteItem(c_quote_items, c_uuid)
     console.log("item not found");
   }
 }
+ 
+
+async function loadCustomerQuote(inQID) {
+
+  const response = await axios.get(BASE_JSONBIN_URL + "/" + JSONBIN_BIN_ID + "/latest");
+  return response.data.record;
+
+}
+
+async function saveCustomerQuote(in_QID, in_cname, in_cmobile, in_cprice) {
+
+  let customer_quote = {
+    "quote_id": in_QID,
+    "customer_name": in_cname,
+    "mobile_no": in_cmobile,
+    "total_price": in_cprice,
+    "quote_items": c_quote_items
+  };
+
+console.log(customer_quote);
   
+  const response = await axios.put(`${BASE_JSONBIN_URL}/${JSONBIN_BIN_ID}`, customer_quote, {
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": JSONBIN_MASTER_KEY
+    }
+  });
+
+console.log(response.data);
+
+  return response.data;
+
+   
+
+}
