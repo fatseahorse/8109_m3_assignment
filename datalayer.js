@@ -72,6 +72,15 @@ async function loadCustomerQuote(inQID) {
 
 async function saveCustomerQuote(in_QID, in_cname, in_cmobile, in_cprice) {
 
+  let quotes = []
+
+  // get existing quote recordset
+  const resp01 = await axios.get(BASE_JSONBIN_URL + "/" + JSONBIN_BIN_ID + "/latest");
+  if (resp01.data.record.length > 0)
+  {
+    quotes = resp01.data.record;
+  }
+
   let customer_quote = {
     "quote_id": in_QID,
     "customer_name": in_cname,
@@ -80,19 +89,70 @@ async function saveCustomerQuote(in_QID, in_cname, in_cmobile, in_cprice) {
     "quote_items": c_quote_items
   };
 
-console.log(customer_quote);
+  quotes.push(customer_quote);
+
+  console.log(customer_quote);
+  console.log(quotes);
   
-  const response = await axios.put(`${BASE_JSONBIN_URL}/${JSONBIN_BIN_ID}`, customer_quote, {
+  const response = await axios.put(`${BASE_JSONBIN_URL}/${JSONBIN_BIN_ID}`, quotes, {
     headers: {
       "Content-Type": "application/json",
       "X-Master-Key": JSONBIN_MASTER_KEY
     }
   });
+  
+  return (response.status == 200) ? 1 : 0;
 
-console.log(response.data);
+}
 
-  return response.data;
 
-   
+async function retrieveCustomerQuote(in_QID)
+{
+
+  let quotes = []
+  let selectedQuote = {};
+
+  // get existing quote recordset
+  const resp01 = await axios.get(BASE_JSONBIN_URL + "/" + JSONBIN_BIN_ID + "/latest");
+  if (resp01.data.record.length > 0)
+  {
+    quotes = resp01.data.record;
+  }
+
+  for (let item of quotes)   
+  {
+    if (item.quote_id == in_QID) {
+      selectedQuote = item;
+      break;
+    }
+  }
+
+  console.log(selectedQuote);
+
+  /*
+  let customer_quote = {
+    "quote_id": in_QID,
+    "customer_name": in_cname,
+    "mobile_no": in_cmobile,
+    "total_price": in_cprice,
+    "quote_items": c_quote_items
+  };
+
+  quotes.push(customer_quote);
+
+  console.log(customer_quote);
+  console.log(quotes);
+  
+  const response = await axios.put(`${BASE_JSONBIN_URL}/${JSONBIN_BIN_ID}`, quotes, {
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": JSONBIN_MASTER_KEY
+    }
+  });
+  */
+  return selectedQuote;
+
+
+
 
 }

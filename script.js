@@ -79,7 +79,38 @@ function renderQuote(in_quote_items)
     }
 
     document.querySelector("#customer-price").innerHTML = total_price;
+}
 
+
+function renderRetrieveQuote(in_quote) 
+{
+    const quoteItemList = document.querySelector("#customer-list-table-body");
+    quoteItemList.innerHTML = '';
+    
+
+    document.querySelector("#c-qid").value = in_quote.quote_id;
+    document.querySelector("#c-name").value = in_quote.customer_name;
+    document.querySelector("#c-mobile").value = in_quote.mobile_no;
+
+    for (let item of in_quote.quote_items) 
+    {
+      const elTR = document.createElement('tr');
+      elTR.innerHTML = `
+        <td><button id="btn-del-${item.quote_item_uuid}" class="btn btn-primary mb-3" data-qid="${item.quote_item_id}" data-uuid="${item.quote_item_uuid}" onClick="deleteFromQuoteList(this.dataset.uuid);">Remove Item</button></td>
+        <td>${item.quote_item_category}</td>
+        <td>${item.quote_item_id}</td>
+        <td>${item.quote_item_name}</td>
+        <td>$${item.quote_item_unit_price.toFixed(2)}</td>
+      `;
+      quoteItemList.appendChild(elTR);
+    }
+
+    document.querySelector("#customer-price").innerHTML = in_quote.total_price;
+    
+    if (in_quote)
+    {
+        alert("Saved Quote Successfully Loaded.");
+    }
 
 }
 
@@ -128,15 +159,39 @@ saveButton.addEventListener("click", async function() {
 
     if ((cqid.trim().length > 0) && (cname.trim().length > 0) && (cmobile.trim().length > 0))
     {
-        saveCustomerQuote(cqid, cname, cmobile, total_price);
+        let resp = await saveCustomerQuote(cqid, cname, cmobile, total_price);
+
+        if (resp == 1)
+        {
+            alert("Quote Save Successfully.");
+        }
+        else
+        {
+            alert("Error saving Quote.");
+        }
     }
     else
     {
         alert("Please enter all fields [Quote ID / Name / Mobile].");
     }
-    
-
-    
-      
+ 
 
 })
+
+const retButton = document.querySelector("#btn-retrieve-quote");
+retButton.addEventListener("click", async function() {
+
+    let cqid = document.querySelector("#c-qid").value;
+    let selectQ = await retrieveCustomerQuote(cqid);
+    
+    if (selectQ.quote_id == cqid)
+    {
+        renderRetrieveQuote(selectQ);
+    }
+    else
+    {
+        alert("Quote ID Does Not Exists.");
+    }
+
+})
+

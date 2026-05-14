@@ -41,7 +41,7 @@
       <h1>Get Instant Quotation</h1>
       
       <div id="price-list">
-        <table id="our-list-table">
+        <table id="our-list-table" class="table table-hover">
           <thead>
             <tr>
               <th>&nbsp;</th>
@@ -59,7 +59,7 @@
 <hr>
 
       <div id="customer-list">
-        <table id="customer-list-table">
+        <table id="customer-list-table" class="table table-hover">
           <thead>
             <tr>
               <th>&nbsp;</th>
@@ -79,17 +79,31 @@
 
 <hr>
 
-      <div class="mb-3">
-      <input type="text" id="c-qid" class="form-control" placeholder="Quote ID">
-      </div>
-      <div class="mb-3">
-      <input type="text" id="c-name" class="form-control" placeholder="Customer Name">
-      </div>
-      <div class="mb-3">
-      <input type="text" id="c-mobile" class="form-control" placeholder="Mobile Number">
-      </div>      
-      <button id="btn-save-quote" class="btn btn-primary mb-3">Save Quote</button>
 
+<div class="mb-3 row">
+  <label for="c-qid" class="form-label fw-bold col-sm-1 col-form-label">Quote ID</label>
+  <div class="col-sm-3">    
+    <input type="text" id="c-qid" class="form-control">
+  </div>
+  <div class="col-sm-3">
+    <button id="btn-save-quote" class="btn btn-primary mb-3">Save Quote</button>
+    <button id="btn-retrieve-quote" class="btn btn-primary mb-3">Retrieve Quote</button>
+  </div>
+</div>
+<div class="mb-3 row">
+  <label for="c-name" class="form-label fw-bold col-sm-1 col-form-label">Customer Name</label>
+  <div class="col-sm-3">    
+    <input type="text" id="c-name" class="form-control">
+  </div>
+</div>
+<div class="mb-3 row">
+  <label for="c-mobile" class="form-label fw-bold col-sm-1 col-form-label">Mobile No.</label>
+  <div class="col-sm-3">    
+    <input type="text" id="c-mobile" class="form-control">
+  </div>
+</div>
+
+ 
 
 
     </main>
